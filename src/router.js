@@ -1,8 +1,15 @@
-import Vue from 'vue'
-import Router from 'vue-router'
-import Home from './views/Home.vue'
+import Vue from 'vue';
+import Router from 'vue-router';
+import Vuesax from 'vuesax';
+import Home from './views/Home.vue';
+import moment from 'moment';
 
-Vue.use(Router)
+import 'vuesax/dist/vuesax.css';
+import 'material-icons/iconfont/material-icons.css';
+
+Vue.use(Router);
+Vue.use(Vuesax);
+Vue.prototype._moment = moment;
 
 export default new Router({
   mode: 'history',
@@ -11,15 +18,12 @@ export default new Router({
     {
       path: '/',
       name: 'home',
-      component: Home
+      component: Home,
     },
     {
       path: '/about',
       name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "about" */ './views/About.vue')
-    }
-  ]
-})
+      component: () => import('./views/About.vue'),
+    },
+  ],
+});

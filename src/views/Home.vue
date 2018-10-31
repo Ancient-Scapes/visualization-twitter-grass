@@ -1,18 +1,29 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <UploadCsv v-on:success-upload="drawing"/>
+    <Heatmap :contribution="contribution" ref="heatmap"/>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+import Heatmap from '@/components/Heatmap.vue';
+import UploadCsv from '@/components/UploadCsv.vue';
+
 
 export default {
   name: 'home',
   components: {
-    HelloWorld
+    Heatmap, UploadCsv,
+  },
+  data() {
+    return {
+      contribution: [],
+    }
+  },
+  methods: {
+    drawing: function(contribution){
+      this.contribution = contribution;
+    },
   }
-}
+};
 </script>
