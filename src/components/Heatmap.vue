@@ -20,30 +20,6 @@ export default {
       today: this.moment(new Date()).format('YYYY-MM-DD'),
     };
   },
-  methods: {
-    drawingCalendar: function(){
-      const cal = [];
-      const startDate = '2017-05-01';
-      const endDate = new Date();
-
-      let start = moment(startDate);
-      const end = moment(endDate);
-
-      while(start.unix() <= end.unix()) {
-        const obj = {
-          date: String(y) + '-' + String(m) + '-' + String(d),
-          count: Math.floor(Math.random(10) * Math.floor(10)),
-        };
-        cal.push(obj);
-        start.add(1, 'days');
-      }
-      this.calendar = cal;
-    },
-    getEndDay: function(year, month) {
-      const date = String(year) + '-' + String(month);
-      return this.moment(date).endOf('month').get('date');
-    },
-  },
 };
 </script>
 
