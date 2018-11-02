@@ -17,7 +17,7 @@ export default {
   },
   data() {
     return {
-      today: this._moment(new Date()).format('YYYY-MM-DD'),
+      today: this.moment(new Date()).format('YYYY-MM-DD'),
     };
   },
   methods: {
@@ -41,7 +41,7 @@ export default {
     },
     getEndDay: function(year, month) {
       const date = String(year) + '-' + String(month);
-      return this._moment(date).endOf('month').get('date');
+      return this.moment(date).endOf('month').get('date');
     },
   },
 };
