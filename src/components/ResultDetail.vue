@@ -18,16 +18,17 @@ export default {
   computed: {
     viewTotalTweetCount: function () {
       if (this.totalTweetCount === 0) return;
-      return `${this.totalTweetCount} Tweets in the last year`;
+      return `${this.totalTweetCount} ${this.tooltipUnit} in the last year`;
     },
     viewUserName: function () {
       if (this.userName === '') return;
-      return `${this.userName} さんのcontribution`;
+      return `${this.userName} さんの${this.tooltipUnit}`;
     },
   },
   props: {
     userName: String,
     totalTweetCount: Number,
+    tooltipUnit: String,
   },
   methods: {
 

@@ -1,10 +1,10 @@
 <template>
   <div class="home">
     <SiteTitle/>
-    <UploadCsv v-on:success-upload="drawingCalendar"/>
-    <!-- <Conditions ref="condtions"/> -->
-    <ResultDetail :userName="userName" :totalTweetCount="totalTweetCount"/>
-    <Heatmap :contribution="contribution"/>
+    <UploadCsv v-on:success-upload="drawingCalendar" :mode="mode"/>
+    <Conditions v-on:change-mode="changeMode"/>
+    <ResultDetail :userName="userName" :totalTweetCount="totalTweetCount" :tooltipUnit="tooltipUnit"/>
+    <Heatmap :contribution="contribution" :tooltipUnit="tooltipUnit"/>
     <Share/>
     <Footer/>
   </div>
@@ -29,6 +29,8 @@ export default {
       contribution: [],
       userName: '',
       totalTweetCount: 0,
+      mode: 'normal',
+      tooltipUnit: 'tweets',
     };
   },
   methods: {
@@ -36,8 +38,6 @@ export default {
       this.contribution = emitObj.contribution;
       this.totalTweetCount = emitObj.totalTweetCount;
       this.userName = emitObj.userName;
-
-      window.scrollTo(59, document.body.scrollLeft);
 
       // 処理終了時に畫面に通知を出す
       this.$vs.notify({
@@ -47,6 +47,20 @@ export default {
         position: 'top-right',
         icon: 'check',
       });
+    },
+    changeMode: function (mode) {
+      this.mode = mode;
+
+      switch (mode) {
+        case 'normal':
+          this.tooltipUnit = 'tweet';
+          break;
+        case 'grass':
+          this.tooltipUnit = '草';
+          break;
+        default:
+          this.tooltipUnit = 'contribution';
+      }
     },
   },
 };

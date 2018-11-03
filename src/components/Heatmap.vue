@@ -1,6 +1,6 @@
 <template>
   <div class="heatmap">
-    <calendar-heatmap :values="contribution" :endDate="today" tooltip-unit="tweets"
+    <calendar-heatmap :values="contribution" :endDate="today" :tooltip-unit="tooltipUnit"
                       class="calendar-heatmap"/>
   </div>
 </template>
@@ -13,6 +13,7 @@ export default {
   name: 'Heatmap',
   props: {
     contribution: Array,
+    tooltipUnit: String,
   },
   components: {
     CalendarHeatmap,

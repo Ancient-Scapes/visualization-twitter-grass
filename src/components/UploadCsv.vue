@@ -1,11 +1,9 @@
 <template>
   <div class="upload-csv">
-    
     <vs-row vs-type="flex" vs-justify="center" vs-align="center" vs-w="12">
       <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="8"
               class="caption">
         <p class="caption"><a class="a-twilog" href="https://twilog.org/settings.rb">Twilog</a>から取得した「UTF-8」のCSVをアップロードしてください。</p>
-
       </vs-col>
     </vs-row>
 
@@ -27,6 +25,9 @@ import csvParser from 'csv-parser';
 
 export default {
   name: 'UploadCsv',
+  props: {
+    mode: String,
+  },
   data() {
     return {
       ymdTweetCount: [],
@@ -59,6 +60,12 @@ export default {
     },
     countCsvTweet: function (data) {
       const ymdText = `20${data[Object.keys(data)[1]].substring(0, 6)}`;
+      const tweet = data[Object.keys(data)[2]];
+
+      if (this.mode === 'grass' && tweet.indexOf('草') === -1) {
+        return;
+      }
+
       this.totalTweetCount += 1;
 
       if (this.ymdTweetCount[ymdText]) {
