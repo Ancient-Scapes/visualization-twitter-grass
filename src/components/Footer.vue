@@ -13,6 +13,6 @@ export default {
 
 <style lang="scss">
 .footer {
-  margin-top: 5%;
+  margin: 5% 0 5% 0; 
 }
 </style>

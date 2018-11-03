@@ -1,57 +1,85 @@
 <template>
   <div class="upload-csv">
-    <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="8" 
-            vs-offset="2" class="caption">
-      <p class="caption">Twilogから取得した、「UTF-8」のCSVをアップロードしてください。</p>
-    </vs-col>
+    
+    <vs-row vs-type="flex" vs-justify="center" vs-align="center" vs-w="12">
+      <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="8"
+              class="caption">
+        <p class="caption"><a class="a-twilog" href="https://twilog.org/settings.rb">Twilog</a>から取得した「UTF-8」のCSVをアップロードしてください。</p>
 
-    <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="4" 
-            vs-offset="4">
-      <input type="file" accept=".csv" class="input-csv" v-on:change.prevent="parseCsv">
-    </vs-col>
+      </vs-col>
+    </vs-row>
+
+    <vs-row vs-type="flex" vs-justify="center" vs-align="center" vs-w="12">
+      <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="8"
+              class="col-input-csv">
+        <label for="input-csv">
+          <p>.csvファイルを選択</p>
+          <input type="file" accept=".csv" id="input-csv" v-on:change.prevent="parseCsv">
+        </label>
+      </vs-col>
+    </vs-row>
+
   </div>
 </template>
 
 <script>
-import parser from 'csv-parser';
+import csvParser from 'csv-parser';
 
 export default {
   name: 'UploadCsv',
   data() {
     return {
-      countTweet: [],
-      contribution: [],
-    }
+      ymdTweetCount: [],
+      totalTweetCount: 0,
+      userName: '',
+    };
   },
   methods: {
-    parseCsv: function(e) {
-      const files = e.target.files || e.dataTransfer.files;
+    parseCsv: function (e) {
+      const csvFile = e.target.files[0];
       const reader = new FileReader();
-      const data = parser();
-      data.on('data', this.countCsvTweet);
+      this.userName = csvFile.name.substring(0, csvFile.name.length - 10);
 
-      reader.onload = event => data.write(event.target.result);
-      reader.onloadend = () => {
-        this.createContribution();
-        this.$emit('success-upload', this.contribution);
+      reader.onload = this.writeCsvParser;
+      reader.onloadend = this.emitContribution;
+      reader.readAsText(csvFile, 'UTF-8');
+    },
+    emitContribution: function () {
+      const emitObj = {
+        contribution: this.createContribution(this.ymdTweetCount),
+        totalTweetCount: this.totalTweetCount,
+        userName: this.userName,
       };
-      reader.readAsText(files[0], 'UTF-8');
+      this.$emit('success-upload', emitObj);
+    },
+    writeCsvParser: function (e) {
+      const parser = csvParser();
+      parser.on('data', this.countCsvTweet);
+      parser.write(e.target.result);
     },
     countCsvTweet: function (data) {
-      const ymdText = '20' + data[Object.keys(data)[1]].substring(0, 6);
-      this.countTweet[ymdText] = this.countTweet[ymdText] ? this.countTweet[ymdText] += 1 : 1;
+      const ymdText = `20${data[Object.keys(data)[1]].substring(0, 6)}`;
+      this.totalTweetCount += 1;
+
+      if (this.ymdTweetCount[ymdText]) {
+        this.ymdTweetCount[ymdText] += 1;
+      } else {
+        this.ymdTweetCount[ymdText] = 1;
+      }
     },
-    createContribution: function () {
-      Object.keys(this.countTweet).forEach(function (ymd) {
-        const year = ymd.substring(0, 4);
-        const month = ymd.substring(4, 6);
-        const date = ymd.substring(6, 8);
+    createContribution: function (ymdTweetCount) {
+      const contribution = [];
+
+      Object.keys(ymdTweetCount).forEach(function (ymd) {
+        const date = this.moment(ymd);
         const contributionObj = {
-          date: year + '-' + month + '-' + date,
-          count: this._data.countTweet[ymd],
+          date: date.format('YYYY-MM-DD'),
+          count: ymdTweetCount[ymd],
         };
-        this._data.contribution.push(contributionObj);
+        contribution.push(contributionObj);
       }, this);
+
+      return contribution;
     },
   },
 };
@@ -61,7 +89,40 @@ export default {
 .caption {
   margin-bottom: 1%;
 }
-.input-csv {
+
+label {
+  color: white;
+  background-color: rgba(var(--primary),1);
+  padding: 15px;
+  border-radius: 12px;
+
+  p {
+    display: flex;
+    align-items: center;
+
+    &::before {
+      font-family: 'Material Icons';
+      content: '\e873';
+      margin: 0 5px 0 0;
+    }
+  }
+}
+
+.a-twilog {
+  &::after {
+    font-family: 'Material Icons';
+    content: "link";
+    position: relative;
+    top: 5px;
+  }
+}
+
+.col-input-csv {
+  margin: 0 0 3% 0;
+}
+
+#input-csv {
   margin-bottom: 5%;
+  display: none;
 }
 </style>
