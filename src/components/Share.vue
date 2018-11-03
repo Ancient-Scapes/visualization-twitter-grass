@@ -7,11 +7,6 @@
 <script>
 export default {
   name: 'Share',
-  data() {
-    return {
-      today: this.moment(new Date()).format('YYYY-MM-DD'),
-    };
-  },
   methods: {
   },
 };

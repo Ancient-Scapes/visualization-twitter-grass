@@ -71,7 +71,7 @@ export default {
       const contribution = [];
 
       Object.keys(ymdTweetCount).forEach(function (ymd) {
-        const date = this.moment(ymd);
+        const date = this.$moment(ymd);
         const contributionObj = {
           date: date.format('YYYY-MM-DD'),
           count: ymdTweetCount[ymd],

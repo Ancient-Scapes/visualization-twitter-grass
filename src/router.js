@@ -2,7 +2,6 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import Vuesax from 'vuesax';
 import moment from 'moment';
-import axios from 'axios';
 import Home from './views/Home.vue';
 
 import 'vuesax/dist/vuesax.css';
@@ -10,8 +9,7 @@ import 'material-icons/iconfont/material-icons.css';
 
 Vue.use(Router);
 Vue.use(Vuesax);
-Vue.prototype.moment = moment;
-Vue.prototype.axios = axios;
+Vue.prototype.$moment = moment;
 
 export default new Router({
   base: process.env.BASE_URL,

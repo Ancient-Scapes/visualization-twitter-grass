@@ -19,7 +19,7 @@ export default {
   },
   data() {
     return {
-      today: this.moment(new Date()).format('YYYY-MM-DD'),
+      today: this.$moment(new Date()).format('YYYY-MM-DD'),
     };
   },
 };
