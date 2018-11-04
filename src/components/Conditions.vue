@@ -17,7 +17,6 @@ export default {
   name: 'Conditions',
   data() {
     return {
-      twitterId: '_Ancient_Scapes',
       modeItems: [
         { text: '通常モード', value: 'normal' },
         { text: '草モード', value: 'grass' },
@@ -36,9 +35,5 @@ export default {
 <style scoped lang="scss">
 .conditions{
   margin-bottom: 5%;
-}
-
-.select-mode {
-
 }
 </style>

@@ -2,8 +2,11 @@
   <div class="heatmap">
     <calendar-heatmap :values="contribution" :endDate="today" :tooltip-unit="tooltipUnit"
                       class="calendar-heatmap"/>
-    <vs-button color="primary" type="border" icon="save" class="button-download"
-               @click="downloadHeatmap" >ダウンロード</vs-button>
+
+    <vs-row vs-type="flex" vs-justify="center" vs-align="center" vs-w="12">
+      <vs-button color="primary" type="border" icon="file_download" class="button-download"
+            @click="downloadHeatmap" v-if="contribution.length !== 0">ダウンロード</vs-button>
+    </vs-row>
   </div>
 </template>
 
@@ -65,12 +68,6 @@ export default {
   margin: 0 3% 3% 3%;
   border: 1px solid #e1e4e8;
   padding: 20px;
-}
-
-#canvas-heatmap {
-  font-size: 9px;
-  width: 917px;
-  height: 157px;
 }
 
 // すまほ
