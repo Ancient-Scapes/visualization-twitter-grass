@@ -16,7 +16,6 @@
     "vue": "^2.5.17",
     "vue-calendar-heatmap": "^0.8.4",
     "vue-router": "^3.0.1",
-    "vuejs-heatmap": "^1.1.7",
     "vuesax": "^3.6.2"
   },
   "devDependencies": {

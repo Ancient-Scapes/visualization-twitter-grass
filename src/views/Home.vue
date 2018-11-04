@@ -46,6 +46,7 @@ export default {
         color: 'primary',
         position: 'top-right',
         icon: 'check',
+        time: 5000,
       });
     },
     changeMode: function (mode) {
