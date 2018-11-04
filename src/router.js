@@ -12,6 +12,7 @@ Vue.use(Vuesax);
 Vue.prototype.$moment = moment;
 
 export default new Router({
+  mode: 'history',
   base: process.env.BASE_URL,
   routes: [
     {
