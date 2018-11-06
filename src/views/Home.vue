@@ -3,8 +3,10 @@
     <SiteTitle/>
     <UploadCsv v-on:success-upload="drawingCalendar" :mode="mode"/>
     <Conditions v-on:change-mode="changeMode"/>
-    <ResultDetail :userName="userName" :totalTweetCount="totalTweetCount" :tooltipUnit="tooltipUnit"/>
-    <Heatmap :contribution="contribution" :tooltipUnit="tooltipUnit"/>
+    <ResultDetail :userName="userName" :totalTweetCount="totalTweetCount[mode]"
+                  :tooltipUnit="tooltipUnit[mode]"/>
+    <Heatmap :contribution="contribution[mode]" :tooltipUnit="tooltipUnit[mode]"
+             :rangeColor="rangeColor[mode]"/>
     <Share/>
     <Footer/>
   </div>
@@ -26,11 +28,24 @@ export default {
   },
   data() {
     return {
-      contribution: [],
+      contribution: {
+        normal: [],
+        grass: [],
+      },
       userName: '',
-      totalTweetCount: 0,
+      totalTweetCount: {
+        normal: 0,
+        grass: 0,
+      },
       mode: 'normal',
-      tooltipUnit: 'tweets',
+      tooltipUnit: {
+        normal: 'tweets',
+        grass: '草',
+      },
+      rangeColor: {
+        normal: ['#ebedf0', '#c0ddf9', '#73b3f3', '#3886e1', '#17459e'],
+        grass: ['#ebedf0', '#c6e48b', '#7bc96f', '#239a3b', '#196127'],
+      }
     };
   },
   methods: {
@@ -51,17 +66,6 @@ export default {
     },
     changeMode: function (mode) {
       this.mode = mode;
-
-      switch (mode) {
-        case 'normal':
-          this.tooltipUnit = 'tweet';
-          break;
-        case 'grass':
-          this.tooltipUnit = '草';
-          break;
-        default:
-          this.tooltipUnit = 'contribution';
-      }
     },
   },
 };

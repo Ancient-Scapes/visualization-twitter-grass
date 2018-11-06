@@ -30,8 +30,14 @@ export default {
   },
   data() {
     return {
-      ymdTweetCount: [],
-      totalTweetCount: 0,
+      ymdTweetCount: {
+        normal: [],
+        grass: [],
+      },
+      totalTweetCount: {
+        normal: 0,
+        grass: 0,
+      },
       userName: '',
     };
   },
@@ -59,31 +65,43 @@ export default {
       parser.write(e.target.result);
     },
     countCsvTweet: function (data) {
-      const ymdText = `20${data[Object.keys(data)[1]].substring(0, 6)}`;
-      const tweet = data[Object.keys(data)[2]];
+      const ymdAndHmd = Object.keys(data)[1];
+      const tweet = Object.keys(data)[2];
+      const ymdText = `20${data[ymdAndHmd].substring(0, 6)}`;
+      const tweetText = data[tweet];
 
-      if (this.mode === 'grass' && tweet.indexOf('草') === -1) {
-        return;
-      }
-
-      this.totalTweetCount += 1;
-
-      if (this.ymdTweetCount[ymdText]) {
-        this.ymdTweetCount[ymdText] += 1;
-      } else {
-        this.ymdTweetCount[ymdText] = 1;
+      // 総ツイートのカウント
+      this.totalTweetCount.normal += 1;
+      // 年月日ごとのツイートのカウント
+      this.ymdTweetCount.normal[ymdText] = this.ymdTweetCount.normal[ymdText]
+                                         ? this.ymdTweetCount.normal[ymdText] += 1
+                                         : 1;
+      
+      // ツイートに草が生えていない場合カウントしない
+      if(tweetText.indexOf === -1) return;
+      // 総ツイートのカウント
+      if(tweetText.indexOf('草') !== -1) {
+        this.totalTweetCount.grass += 1;
+        // 年月日ごとのツイートのカウント
+        this.ymdTweetCount.grass[ymdText] = this.ymdTweetCount.grass[ymdText]
+                                          ? this.ymdTweetCount.grass[ymdText] += 1
+                                          : 1;
       }
     },
     createContribution: function (ymdTweetCount) {
-      const contribution = [];
-
-      Object.keys(ymdTweetCount).forEach(function (ymd) {
-        const date = this.$moment(ymd);
-        const contributionObj = {
-          date: date.format('YYYY-MM-DD'),
-          count: ymdTweetCount[ymd],
-        };
-        contribution.push(contributionObj);
+      const contribution = {
+        normal: [],
+        grass: [],
+      };
+      Object.keys(ymdTweetCount).forEach(function (mode) {
+        Object.keys(ymdTweetCount[mode]).forEach(function (ymd) {
+          const date = this.$moment(ymd);
+          const contributionObj = {
+            date: date.format('YYYY-MM-DD'),
+            count: ymdTweetCount[mode][ymd],
+          };
+          contribution[mode].push(contributionObj);
+        }, this);
       }, this);
 
       return contribution;

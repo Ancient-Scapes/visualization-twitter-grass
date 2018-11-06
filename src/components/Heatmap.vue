@@ -1,7 +1,7 @@
 <template>
   <div class="heatmap">
     <calendar-heatmap :values="contribution" :endDate="today" :tooltip-unit="tooltipUnit"
-                      class="calendar-heatmap"/>
+                      :range-color="rangeColor" class="calendar-heatmap"/>
 
     <vs-row vs-type="flex" vs-justify="center" vs-align="center" vs-w="12">
       <vs-button color="primary" type="border" icon="file_download" class="button-download"
@@ -20,6 +20,7 @@ export default {
   props: {
     contribution: Array,
     tooltipUnit: String,
+    rangeColor: Array,
   },
   components: {
     CalendarHeatmap,
